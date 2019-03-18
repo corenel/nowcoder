@@ -433,7 +433,7 @@ while k != 0:
 print(result)
 ```
 
-### Peak Index in a Mountain Array
+### Longest Mountain In Array
 
 给定一个数组，代表海拔高度，输出最长连续山脉的长度。以山脉M为例, 要求：
 
