@@ -451,6 +451,11 @@ Example 2:
 - Input: 2, 1, 7, 7, 2, 5
 - Output: 0
 
+参见[leercode第845题](https://leetcode.com/problems/longest-mountain-in-array/)：
+
+- Time Complexity: $O(N)$, where $N$ is the length of `a`.
+- Space Complexity: $O(1)​$.
+
 ```python
 # read inputs
 a = list(map(int, input().strip().split(',')))
@@ -459,20 +464,29 @@ a = list(map(int, input().strip().split(',')))
 if len(a) < 3:
     print(0)
 
-# use binary search
-left, right = 1, len(a) - 1
-while left <= right:
-    mid = left + (right - left) // 2
-    if a[mid - 1] < a[mid] and a[mid] > a[mid + 1]:
-        print(mid + 1)
-        break
-    elif a[mid - 1] < a[mid] < a[mid + 1]:
-        left = mid + 1
-    elif a[mid - 1] > a[mid] > a[mid + 1]:
-        right = mid - 1
-    else:
-        left += 1
-else:
-    print(0)
+# find longest mountain in array
+# by searching mountains one by one
+length = len(a)
+ans = base = 0
+while base < length:
+    end = base
+    # if base is a left-boundary
+    if end + 1 < length and a[end] < a[end + 1]:
+        # set end to the peak of this potential mountain
+        while end + 1 < length and a[end] < a[end + 1]:
+            end += 1
+
+        # if end is really a peak
+        if end + 1 < length and a[end] > a[end + 1]:  
+            # set 'end' to right-boundary of mountain
+            while end + 1 < length and a[end] > a[end + 1]:
+                end += 1
+            # record candidate answer
+            ans = max(ans, end - base + 1)
+
+    base = max(end, base + 1)
+
+print(ans)
+
 ```
 
