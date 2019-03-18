@@ -439,7 +439,7 @@ print(result)
 
 - $M.length>=3​$,如果不存在则输出$0​$;
 
-- 存在$0 < i < M.length -1$,使得$M[0] < \ldots< M[i] > \ldots> M[M.length -1]$。
+- 存在$0 < i < M.length -1​$,使得$M[0] < \ldots< M[i] > \ldots> M[M.length -1]​$。
 
 Example 1:
 
@@ -461,32 +461,31 @@ Example 2:
 a = list(map(int, input().strip().split(',')))
 
 # basic case
-if len(a) < 3:
-    print(0)
-
-# find longest mountain in array
-# by searching mountains one by one
 length = len(a)
-ans = base = 0
-while base < length:
-    end = base
-    # if base is a left-boundary
-    if end + 1 < length and a[end] < a[end + 1]:
-        # set end to the peak of this potential mountain
-        while end + 1 < length and a[end] < a[end + 1]:
-            end += 1
+if length < 3:
+    return 0
 
-        # if end is really a peak
-        if end + 1 < length and a[end] > a[end + 1]:  
-            # set 'end' to right-boundary of mountain
-            while end + 1 < length and a[end] > a[end + 1]:
-                end += 1
-            # record candidate answer
-            ans = max(ans, end - base + 1)
+left = right = 0
+result = 0
+while left < length:
+    # determine whether or not to start a mountain
+    if right + 1 < length and a[right] < a[right + 1]:
+        # find the ending position of ascending nubers
+        while right + 1 < length and a[right] < a[right + 1]:
+            right += 1
+        # check whether or not current position (right) is really a peak
+        if right + 1 < length and a[right] > a[right + 1]:
+            # find the ending position of descending numbers
+            while right + 1 < length and a[right] > a[right + 1]:
+                right += 1
+            # save the length of longest mountain
+            result = max(result, right - left + 1)
+    # move left boundary to the next position (if mountain is not found)
+    # or to the end of current mountain (if mountain is found)
+    left = max(left + 1, right)
+    right = left
 
-    base = max(end, base + 1)
-
-print(ans)
+print(result)
 
 ```
 
