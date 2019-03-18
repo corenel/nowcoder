@@ -88,9 +88,13 @@ $$
 
     - [ ] 34
     - [ ] 68
-    - [ ] 35
+    - [x] 35
     - [ ] 70
 
+    > - $O = [\frac{I + 2\times p - k}{s}] + 1$
+    > - $I = s \times (O - 1) + k - 2\times p​$
+    > - from 1 pixel in feature map to input: $1\to 4 \to 9 \to 18 \to 35​$
+    >
     > Reference:
     >
     > - [A guide to receptive field arithmetic for Convolutional Neural Networks](https://medium.com/mlreview/a-guide-to-receptive-field-arithmetic-for-convolutional-neural-networks-e0f514068807)
@@ -129,9 +133,9 @@ $$
     > - [What is the main difference between Truncate, Delete and Drop in a database?](https://www.quora.com/What-is-the-main-difference-between-Truncate-Delete-and-Drop-in-a-database)
 
 10. 下面有关分类算法的精确率、召回率、F1值的描述，错误的是
-    - [ ] 召回率是指检索出的相关文档数和检索出的文档总数的比率，衡量的是检索系统的查全率
+    - [x] 召回率是指检索出的相关文档数和检索出的文档总数的比率，衡量的是检索系统的查全率
     - [ ] 为了解决准确率和召回率的平衡问题，引入了$F1$值
-    - [x] 精确率是指检索出相关文档数与检索出的文档总数的比率，衡量的是检索系统的查准率
+    - [ ] 精确率是指检索出相关文档数与检索出的文档总数的比率，衡量的是检索系统的查准率
     - [ ] 精确率、召回率取值都在0和1之间，越接近于1，指标就越好
 
     > - 准确率（Precision）：P=TP/(TP+FP)。通俗地讲，就是**预测正确的正例数据**占**预测为正例数据**的比例。
@@ -141,27 +145,37 @@ $$
     > - AUC曲线（Area Under Curve）的值为ROC曲线下面的面积，若如上所述模型十分准确，则AUC为1。
 
 11. 小明建立了一个比较简单的CNN模型，共3层，每层都采用$\text{kernel size} = 3\times 3​$，$ \text{stride}=1​$，padding的设置分别为$0,1,0​$。当输入为一个$32\times 32​$的图片时，请问输出的维度是多少（不考虑channel）？小明由于粗心大雨，将输入图像的每个位置的值都设成了1，而kernel的每个weight采用了random的初始化方式，请问网络第一次前向传播时会输出怎样的结果？
-     - [ ] $28\times 28$；输出的每个位置可能不同
-     - [x] $28\times 28$；输出的每个位置都是一样的
-     - [ ] $32\times 32​$；输出的每个位置都是一样的
-     - [ ] $32\times 32$；输出的每个位置可能不同
+      - [ ] $28\times 28$；输出的每个位置可能不同
+      - [x] $28\times 28​$；输出的每个位置都是一样的
+      - [ ] $32\times 32​$；输出的每个位置都是一样的
+      - [ ] $32\times 32​$；输出的每个位置可能不同
 
-12. 随机梯度下降算法中引入动量后，假设达到最终速度，则该速度是原来的多少倍（假设动量参数为$\alpha$）？
-     - [ ] $1-\alpha$
-     - [ ] $1/\alpha$
-     - [ ] $\alpha$
-     - [x] $1/(1-\alpha)$
+     > 1. $32\to 30\to 30\to 28$
+     > 2. weights经过随机初始化后是fixed，对每个位置来说，如果输入相同，则经过同一个卷积核，其卷积结果也相同。
 
-     > $$
-     > \begin{aligned}
-     > \boldsymbol{v}_t &\leftarrow \gamma \boldsymbol{v}_{t-1} + \eta_t \boldsymbol{g}_t, \\
-     > \boldsymbol{x}_t &\leftarrow \boldsymbol{x}_{t-1} - \boldsymbol{v}_t,
-     > \end{aligned}
-     > $$
-     >
-     > Reference:
-     >
-     > - [Momentum](https://zh.d2l.ai/chapter_optimization/momentum.html)
+12. 随机梯度下降算法中引入动量后，假设达到最终速度，则该速度是原来的多少倍（假设动量参数为$\alpha​$）？
+       - [ ] $1-\alpha$
+       - [ ] $1/\alpha$
+       - [ ] $\alpha$
+       - [x] $1/(1-\alpha)$
+
+       > 在时间步$t>0$，动量法对每次迭代的步骤做如下修改 
+       > $$
+       > \begin{aligned}
+       > \boldsymbol{v}_t &\leftarrow \gamma \boldsymbol{v}_{t-1} + \eta_t \boldsymbol{g}_t, \\
+       > \boldsymbol{x}_t &\leftarrow \boldsymbol{x}_{t-1} - \boldsymbol{v}_t,
+       > \end{aligned}
+       > $$
+       >
+       > 对动量法的速度变量做变形
+       > $$
+       > \boldsymbol{v}_t \leftarrow \gamma \boldsymbol{v}_{t-1} + (1 - \gamma) \left(\frac{\eta_t}{1 - \gamma} \boldsymbol{g}_t\right).
+       > $$
+       > 由指数加权移动平均的形式可得，速度变量***v***tvt实际上对序列$\{\eta_{t-i}\boldsymbol{g}_{t-i} /(1-\gamma):i=0,\ldots,1/(1-\gamma)-1\}$做了指数加权移动平均。换句话说，相比于小批量随机梯度下降，动量法在每个时间步的自变量更新量近似于将前者对应的最近$1/(1-\gamma)$个时间步的更新量做了指数加权移动平均后再除以$1-\gamma​$。所以，在动量法中，自变量在各个方向上的移动幅度不仅取决当前梯度，还取决于过去的各个梯度在各个方向上是否一致。
+       >
+       > Reference:
+       >
+       > - [Momentum](https://zh.d2l.ai/chapter_optimization/momentum.html)
 
 13. 假设Double Q-Learning的值函数为$Q^A$和$Q^B$，对于样本$(s, a, r, s')$，如果当前随机选择更新值函数值$Q^A$，则其更新方式为：
 
@@ -175,6 +189,8 @@ $$
     - [ ] 基于Levenberg-Marquardt的改进算法
     - [ ] 基于共轭梯度法的改进算法
     - [x] 使用拟牛顿法的改进算法
+
+    > 拟牛顿法属于二阶优化算法，其他都是一阶方法。
 
 15. 假设某大学的食堂有若干个窗口，售卖多种加个固定的套餐，但是每天每个窗口只会出售其中一种。同时，你在各个窗口的消费还会得到折扣，折扣的具体数据只取决于当前和上一次买饭所在的窗口。你需要在该大学停留若干天，每天在食堂就餐一次，并且你知道每天每个窗口的菜单和折扣方案。请问，以下哪种方法，可以计算出每天买饭窗口的序列，使得总的花费最少。
 
@@ -279,24 +295,26 @@ $$
 
 10. 现有贝叶斯网络如下，以下说法正确的是
 
+    ![netease_2019_byres](netease_2019_byres.png)
+
     - [ ] $x_1$和$x_2$在$x_4$给定的条件下独立
     - [ ] $x_3$和$x_7$在$x_5$给定的条件下独立
     - [ ] $x_1, x_2, \ldots, x_7$的联合分布为$p(x_1, x_2, x_3, x_4, x_5, x_6, x_7) = p(x_1)p(x_2)p(x_3)p(x_4 | x_1, x_2, x_3) p(x_5|x_1, x_3)p(x_6|x_4)p(x_7|x_4, x_5)$
-    - [ ] $x_6$和$x_7$在$x_4$给定的条件下独立
+    - [ ] $x_6$和$x_7$在$x_4​$给定的条件下独立
 
 11. 关于集成学习，以下说法正确的有
 
-    - [x] Boosting在每一轮学习中会根据样本分布对训练集进行重采样
-    - [ ] 其他都正确
-    - [x] 集成学习通常比单一学习器有更好的泛化能力
-    - [ ] 随机森林只用于分类任务，而Gradient Boosting只用于回归任务
+     - [x] Boosting在每一轮学习中会根据样本分布对训练集进行重采样
+     - [ ] 其他都正确
+     - [x] 集成学习通常比单一学习器有更好的泛化能力
+     - [ ] 随机森林只用于分类任务，而Gradient Boosting只用于回归任务
 
 12. 以下叙述正确的有
 
-    - [x] 记$X$和$Y$的样本协方差为$Cov(X, Y)$，若$Cov(X_1, Y_1)>Cov(X_2, Y_2)$，则$X_1$和$Y_1$的相关性大于$X_2$和$Y_2$
-    - [ ] 若变量$X$和$Y$的期望值符合$E(XY)=E(X)E(Y)$，则$X$和$Y$相互独立
-    - [x] 多个独立的一元正态分布的联合分布为正态分布
-    - [x] 若$X$和$Y$为两个独立的随机变量，则它们的方差满足$D(X+Y)=D(X)+D(Y)$
+     - [x] 记$X$和$Y$的样本协方差为$Cov(X, Y)$，若$Cov(X_1, Y_1)>Cov(X_2, Y_2)$，则$X_1$和$Y_1$的相关性大于$X_2$和$Y_2$
+     - [ ] 若变量$X$和$Y$的期望值符合$E(XY)=E(X)E(Y)$，则$X$和$Y$相互独立
+     - [x] 多个独立的一元正态分布的联合分布为正态分布
+     - [x] 若$X$和$Y$为两个独立的随机变量，则它们的方差满足$D(X+Y)=D(X)+D(Y)$
 
 ## 填空题
 
