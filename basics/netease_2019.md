@@ -189,9 +189,9 @@ $$
 14. 标准BP算法采用的是最速梯度下降法修正权值，该算法存在于输入样本的顺序有关、收敛速度缓慢、易陷入局部极小等缺陷。为了克服算法中的不足，研究者们提出了许多改进算法，其中（）算法与其他三个算法的原理不一样。
 
     - [ ] 附加动量的改进算法
-    - [ ] 基于Levenberg-Marquardt的改进算法
+    - [x] 基于Levenberg-Marquardt的改进算法
     - [ ] 基于共轭梯度法的改进算法
-    - [x] 使用拟牛顿法的改进算法
+    - [ ] 使用拟牛顿法的改进算法
 
     > 拟牛顿法、共轭梯度法与动量法属于一阶方法，LM属于二阶优化算法。
     >
@@ -201,6 +201,10 @@ $$
     >   - Gauss-Newton
     >   - Quasi-Newton
     >   - BFGS/LBFGS
+    >
+    > Reference:
+    >
+    > - [Introduction to Optimization: Second Order Optimization Methods](https://ipvs.informatik.uni-stuttgart.de/mlr/marc/teaching/13-Optimization/04-secondOrderOpt.pdf)
 
 15. 假设某大学的食堂有若干个窗口，售卖多种加个固定的套餐，但是每天每个窗口只会出售其中一种。同时，你在各个窗口的消费还会得到折扣，折扣的具体数据只取决于当前和上一次买饭所在的窗口。你需要在该大学停留若干天，每天在食堂就餐一次，并且你知道每天每个窗口的菜单和折扣方案。请问，以下哪种方法，可以计算出每天买饭窗口的序列，使得总的花费最少。
 
